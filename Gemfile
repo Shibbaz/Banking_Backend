@@ -15,10 +15,10 @@ gem 'puma', '~> 5.0'
 # gem 'redis', '~> 4.0'
 # Use Active Model has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
-
+# Use net-smtp
+gem 'net-smtp'
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
-
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false
 
@@ -38,3 +38,17 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+
+# Linter gem
+gem "standard", group: [:development, :test]
+# Debugger
+gem 'pry', '~> 0.13.1'
+# Testing framework
+group :development, :test do
+  gem 'rspec-rails', '~> 6.0.0.rc1'
+end
+# Faking data gem
+gem 'faker', :git => 'https://github.com/faker-ruby/faker.git', :branch => 'master'
+# FactoryBot gem
+gem 'factory_bot'
+
