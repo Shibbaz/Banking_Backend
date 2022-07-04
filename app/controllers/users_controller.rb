@@ -11,8 +11,7 @@ class UsersController < ApplicationController
     end
 
     def create
-        binding.pry
-        @user = User.new(user_params)
+        @user = Contexts::Users::Repository.new.create!(user_params)
         if @user.save
             render json: @user, status: :created
         else
@@ -21,7 +20,7 @@ class UsersController < ApplicationController
     end
 
     def update
-        unless @user.update(user_params)
+        unless Contexts::Users::Repository.new.update(user_params)
             render json: { errors: @user.errors.full_messages}, status: :unprocessable_entity
         end
     end
@@ -37,6 +36,6 @@ class UsersController < ApplicationController
         end
 
         def set_user
-            @user = User.find(params[:id])
+            @user = Contexts::Users::Repository.new.find(params[:id])
         end
 end

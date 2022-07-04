@@ -8,7 +8,11 @@ module Contexts
             end
 
             def create!(params)
-                @adapter.create(params)
+                @adapter.new(params)
+            end
+
+            def update!(params)
+                @adapter.update(params)
             end
 
             def delete!(id)
