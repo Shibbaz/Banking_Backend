@@ -51,4 +51,7 @@ end
 gem 'faker', :git => 'https://github.com/faker-ruby/faker.git', :branch => 'master'
 # FactoryBot gem
 gem 'factory_bot'
+# Authenticate
+gem 'jwt'
+gem 'bcrypt', '~> 3.1.7'
 
