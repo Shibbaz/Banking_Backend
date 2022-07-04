@@ -7,7 +7,7 @@ class ApplicationController < ActionController::API
             header = request.headers["Authorization"]
             header = header.split(" ").last if header
             repository = Contexts::Jwt::Repository.new
-            decoded = repository.decode(header)
+            decoded = repository.jwt_decode(header)
             @current_user = Contexts::Users::Repository.new.find(decoded[:user_id])
         end
 
