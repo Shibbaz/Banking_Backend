@@ -12,17 +12,12 @@ class UsersController < ApplicationController
 
     def create
         @user = Contexts::Users::Repository.new.create!(user_params)
-        if @user.save
-            render json: @user, status: :created
-        else
-            render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
-        end
+        render json: {message: "User was created"}, status: :ok
     end
 
     def update
-        unless Contexts::Users::Repository.new.update(user_params)
-            render json: { errors: @user.errors.full_messages}, status: :unprocessable_entity
-        end
+        @user = Contexts::Users::Repository.new.update(id: @user.id, params: user_params)
+        render json: {message: "User was updated"}, status: :ok
     end
 
     def destroy
@@ -36,6 +31,6 @@ class UsersController < ApplicationController
         end
 
         def set_user
-            @user = Contexts::Users::Repository.new.find(params[:id])
+            @user = Contexts::Users::Repository.find(params[:id])
         end
 end

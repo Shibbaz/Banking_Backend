@@ -8,15 +8,30 @@ module Contexts
             end
 
             def create!(params)
-                @adapter.new(params)
+                event = UserWasCreated.new(data: {
+                    params: params,
+                    adapter: @adapter
+                  })
+                $event_store.publish(event, stream_name: SecureRandom.uuid)
             end
 
-            def update!(params)
-                @adapter.update(params)
+            def update!(id:, params:)
+                event = UserWasUpdated.new(data: {
+                    params: params,
+                    id: id,
+                    adapter: @adapter
+                    }
+                )
+                $event_store.publish(event, stream_name: SecureRandom.uuid)
             end
 
             def delete!(id)
-                @adapter.delete(id)
+                event = UserWasDeleted.new(data: {
+                    params: params,
+                    id: id,
+                    adapter: @adapter
+                  })
+                $event_store.publish(event, stream_name: SecureRandom.uuid)
             end
 
             def find(id)

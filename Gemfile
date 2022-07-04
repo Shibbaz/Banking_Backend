@@ -54,4 +54,4 @@ gem 'factory_bot'
 # Authenticate
 gem 'jwt'
 gem 'bcrypt', '~> 3.1.7'
-
+gem "rails_event_store"
