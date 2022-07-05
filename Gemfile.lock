@@ -68,7 +68,12 @@ GEM
       minitest (>= 5.1)
       tzinfo (~> 2.0)
       zeitwerk (~> 2.3)
+    aggregate_root (2.5.1)
+      ruby_event_store (= 2.5.1)
+    arkency-command_bus (0.4.1)
+      concurrent-ruby
     ast (2.4.2)
+    bcrypt (3.1.18)
     bootsnap (1.12.0)
       msgpack (~> 1.2)
     builder (3.2.4)
@@ -86,6 +91,7 @@ GEM
       activesupport (>= 5.0)
     i18n (1.10.0)
       concurrent-ruby (~> 1.0)
+    jwt (2.4.1)
     listen (3.7.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -141,6 +147,18 @@ GEM
       nokogiri (>= 1.6)
     rails-html-sanitizer (1.4.3)
       loofah (~> 2.3)
+    rails_event_store (2.5.1)
+      activejob (>= 3.0)
+      activemodel (>= 3.0)
+      activesupport (>= 3.0)
+      aggregate_root (= 2.5.1)
+      arkency-command_bus (>= 0.4)
+      rails_event_store_active_record (= 2.5.1)
+      ruby_event_store (= 2.5.1)
+      ruby_event_store-browser (= 2.5.1)
+    rails_event_store_active_record (2.5.1)
+      activerecord (>= 6.0)
+      ruby_event_store (= 2.5.1)
     railties (6.1.6)
       actionpack (= 6.1.6)
       activesupport (= 6.1.6)
@@ -154,6 +172,10 @@ GEM
       ffi (~> 1.0)
     regexp_parser (2.5.0)
     rexml (3.2.5)
+    rspec (3.11.0)
+      rspec-core (~> 3.11.0)
+      rspec-expectations (~> 3.11.0)
+      rspec-mocks (~> 3.11.0)
     rspec-core (3.11.0)
       rspec-support (~> 3.11.0)
     rspec-expectations (3.11.0)
@@ -186,6 +208,13 @@ GEM
       rubocop (>= 1.7.0, < 2.0)
       rubocop-ast (>= 0.4.0)
     ruby-progressbar (1.11.0)
+    ruby_event_store (2.5.1)
+      concurrent-ruby (~> 1.0, >= 1.1.6)
+    ruby_event_store-browser (2.5.1)
+      rack
+      ruby_event_store (= 2.5.1)
+    ruby_event_store-rspec (2.5.1)
+      rspec (~> 3.0)
     spring (4.0.0)
     sprockets (4.1.1)
       concurrent-ruby (~> 1.0)
@@ -211,17 +240,21 @@ PLATFORMS
   arm64-darwin-21
 
 DEPENDENCIES
+  bcrypt (~> 3.1.7)
   bootsnap (>= 1.4.4)
   byebug
   factory_bot
   faker!
+  jwt
   listen (~> 3.3)
   net-smtp
   pg (~> 1.1)
   pry (~> 0.13.1)
   puma (~> 5.0)
   rails (~> 6.1.6)
+  rails_event_store
   rspec-rails (~> 6.0.0.rc1)
+  ruby_event_store-rspec
   spring
   standard
   tzinfo-data
