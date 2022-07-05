@@ -55,3 +55,6 @@ gem "factory_bot"
 gem "jwt"
 gem "bcrypt", "~> 3.1.7"
 gem "rails_event_store"
+group :test do
+  gem "ruby_event_store-rspec"
+end
