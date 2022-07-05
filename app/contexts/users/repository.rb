@@ -14,26 +14,7 @@ module Contexts
                   })
                 $event_store.publish(event, stream_name: SecureRandom.uuid)
             end
-
-            def update!(id:, params:)
-                event = UserWasUpdated.new(data: {
-                    params: params,
-                    id: id,
-                    adapter: @adapter
-                    }
-                )
-                $event_store.publish(event, stream_name: SecureRandom.uuid)
-            end
-
-            def delete!(id)
-                event = UserWasDeleted.new(data: {
-                    params: params,
-                    id: id,
-                    adapter: @adapter
-                  })
-                $event_store.publish(event, stream_name: SecureRandom.uuid)
-            end
-
+            
             def find(id)
                 @adapter.find(id)
             end

@@ -8,7 +8,7 @@ class AuthenticationController < ApplicationController
             token = repository.token
             render json: {token: token }, status: :ok
         else
-            render json: {error: 'unauthorized'}, status: unauthorized
+            render json: {error: 'unauthorized'}, status: :unauthorized
         end
     end
 end
