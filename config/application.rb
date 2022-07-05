@@ -39,6 +39,6 @@ module App
     config.autoloader = :classic
     # config.eager_load_paths += %W(#{Rails.root}/app/contexts/**)
     # config.add_autoload_paths_to_load_path = false
-    config.eager_load_paths += Dir[Rails.root.join('app/contexts/**/*.rb')].each { |rb| require rb }
+    config.eager_load_paths += Dir[Rails.root.join("app/contexts/**/*.rb")].each { |rb| require rb }
   end
 end
