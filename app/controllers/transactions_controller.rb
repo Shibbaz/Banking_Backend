@@ -1,5 +1,5 @@
 class TransactionsController < ApplicationController
-  def show
+  def index
     transactionIds = (sum).map(&:id)
     render json: Transaction.where(id: transactionIds).order("created_at DESC"), status: :ok
   end
