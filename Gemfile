@@ -58,3 +58,4 @@ gem "rails_event_store"
 group :test do
   gem "ruby_event_store-rspec"
 end
+gem "batch-loader"
