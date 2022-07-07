@@ -8,7 +8,9 @@ module Contexts
             stream[:params]
           )
           user.save!
-          Transaction.create!({ sender: 1000, receiver: user.id, amount: 1000.0 })
+          ActiveRecord::Base.transaction do
+            Transaction.create!({ sender: 1000, receiver: user.id, amount: 1000.0 })
+          end
         end
       end
     end
