@@ -61,3 +61,6 @@ end
 gem "batch-loader"
 # Rubocop
 gem 'rubocop-rails', require: false
+# SimpleCov
+gem 'simplecov', require: false, group: :test
+
