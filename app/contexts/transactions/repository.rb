@@ -1,8 +1,6 @@
 module Contexts
   module Transactions
     class Repository
-      attr_reader :adapter
-
       def initialize(current_user_id, adapter: Transaction)
         @adapter = adapter
         @current_user_id = current_user_id
@@ -35,10 +33,14 @@ module Contexts
       end
 
       def current_user_transactions
-        Transaction.where(receiver: @current_user_id).or(Transaction.where(sender: @current_user_id))
+        Transaction.where(receiver_id: @current_user_id).or(Transaction.where(sender_id: @current_user_id))
       end
 
       private
+
+      attr_reader :adapter
+      attr_reader :negative_transactions
+      attr_reader :current_user_id
 
       def received
         transactions = current_user_transactions
@@ -51,15 +53,15 @@ module Contexts
 
       def transfered
         transactions = current_user_transactions
-        transactions.map(&:sender).each_with_index { |element, index|
+        transactions.map(&:sender_id).each_with_index { |element, index|
           @negative_transactions << index if element == @current_user_id
         }
-        sentMoney = transactions.map(&:amount).each_with_index.map { |element, index|
+        sent_money = transactions.map(&:amount).each_with_index.map { |element, index|
           if @negative_transactions.include?(index)
             Contexts::Helpers::Methods.new.make_negative(element)
           end
         }
-        sentMoney.select { |element| !element.equal?(nil) }
+        sent_money.select { |element| !element.equal?(nil) }
       end
     end
   end

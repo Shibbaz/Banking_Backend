@@ -15,7 +15,7 @@ RSpec.describe "Transactions", type: :request do
     }
 
     before do
-      Transaction.create!(sender: 1000, receiver: user.id, amount: 1000.0)
+      Transaction.create!(sender_id: 1000, receiver_id: user.id, amount: 1000.0)
     end
 
     it "succeces in accessing /transactions page" do
@@ -61,13 +61,13 @@ RSpec.describe "Transactions", type: :request do
       JSON(response.body)["token"]
     }
     before do
-      Transaction.create!(sender: 1000, receiver: user.id, amount: 1000.0)
-      Transaction.create!(sender: 1000, receiver: extra_user.id, amount: 1000.0)
+      Transaction.create!(sender_id: 1000, receiver_id: user.id, amount: 1000.0)
+      Transaction.create!(sender_id: 1000, receiver_id: extra_user.id, amount: 1000.0)
     end
 
     it "creates new transaction" do
       post "/transactions", params: {
-        receiver: extra_user.id,
+        receiver_id: extra_user.id,
         amount: 1.0
       }, headers: { Authorization: token }
 
@@ -77,7 +77,7 @@ RSpec.describe "Transactions", type: :request do
     it "fails creating new transaction. Receiver can't be sender" do
       expect {
         post "/transactions", params: {
-          receiver: user.id,
+          receiver_id: user.id,
           amount: 1.0
         }, headers: { Authorization: token }
       }.to raise_error(StandardError)
@@ -85,7 +85,7 @@ RSpec.describe "Transactions", type: :request do
 
     it "sends back money" do
       post "/transactions", params: {
-        receiver: extra_user.id,
+        receiver_id: extra_user.id,
         amount: 1.0
       }, headers: { Authorization: token }
 
@@ -93,7 +93,7 @@ RSpec.describe "Transactions", type: :request do
       expect(Contexts::Transactions::Repository.new(user.id).calculate_balance).to eq(999.0)
       expect(Contexts::Transactions::Repository.new(extra_user.id).calculate_balance).to eq(1001.0)
       post "/transactions", params: {
-        receiver: user.id,
+        receiver_id: user.id,
         amount: 1.0
       }, headers: { Authorization: extra_token }
       expect(Contexts::Transactions::Repository.new(user.id).calculate_balance).to eq(1000.0)

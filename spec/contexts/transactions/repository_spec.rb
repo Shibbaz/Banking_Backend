@@ -12,10 +12,10 @@ RSpec.describe Contexts::Transactions::Repository, type: :model do
     Contexts::Transactions::Repository.new(user.id)
   }
   let(:transaction) {
-    Transaction.new(sender: 1000, receiver: user.id, amount: 1000.0)
+    Transaction.new(sender_id: 1000, receiver_id: user.id, amount: 1000.0)
   }
   let(:extra_transaction) {
-    Transaction.new(sender: 1000, receiver: extra_user.id, amount: 1000.0)
+    Transaction.new(sender_id: 1000, receiver_id: extra_user.id, amount: 1000.0)
   }
   before do
     transaction.save!
@@ -31,7 +31,7 @@ RSpec.describe Contexts::Transactions::Repository, type: :model do
   context "calculate balance method" do
     it "calculates balance" do
       expect(repository.calculate_balance).to eq(1000)
-      Transaction.create!(sender: user.id, receiver: extra_user.id, amount: 100.0)
+      Transaction.create!(sender_id: user.id, receiver_id: extra_user.id, amount: 100.0)
       expect(repository.calculate_balance).to eq(900)
     end
   end
@@ -40,7 +40,7 @@ RSpec.describe Contexts::Transactions::Repository, type: :model do
     it "returns current user transactions" do
       expect(repository.current_user_transactions.length).to eq(1)
       expect(repository.current_user_transactions).to eq([transaction])
-      Transaction.create!(sender: user.id, receiver: extra_user.id, amount: 100.0)
+      Transaction.create!(sender_id: user.id, receiver_id: extra_user.id, amount: 100.0)
       expect(repository.current_user_transactions.length).to eq(2)
     end
   end
@@ -53,7 +53,7 @@ RSpec.describe Contexts::Transactions::Repository, type: :model do
 
   context "account_data method" do
     it "returns sorted transactions" do
-      Transaction.create!(sender: user.id, receiver: extra_user.id, amount: 100.0)
+      Transaction.create!(sender_id: user.id, receiver_id: extra_user.id, amount: 100.0)
       expect(repository.show_sorted_transactions.length).to eq(2)
     end
   end
@@ -61,7 +61,7 @@ RSpec.describe Contexts::Transactions::Repository, type: :model do
   context "create! method" do
     it "success" do
       params = {
-        receiver: extra_user.id,
+        receiver_id: extra_user.id,
         amount: 1.0
       }
       event_store = repository.create!(params)

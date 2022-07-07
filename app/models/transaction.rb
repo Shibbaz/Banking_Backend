@@ -1,5 +1,5 @@
 class Transaction < ApplicationRecord
-  validates :sender, presence: true
-  validates :receiver, presence: true
+  validates :sender_id, presence: true
+  validates :receiver_id, presence: true
   validates :amount, numericality: true
 end

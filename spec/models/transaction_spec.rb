@@ -6,11 +6,11 @@ RSpec.describe Transaction, type: :model do
   end
 
   it "is not valid without a sender" do
-    expect { create(:transaction, sender: nil) }.to raise_error(ActiveRecord::RecordInvalid)
+    expect { create(:transaction, sender_id: nil) }.to raise_error(ActiveRecord::RecordInvalid)
   end
 
   it "is not valid without a receiver" do
-    expect { create(:transaction, receiver: nil) }.to raise_error(ActiveRecord::RecordInvalid)
+    expect { create(:transaction, receiver_id: nil) }.to raise_error(ActiveRecord::RecordInvalid)
   end
 
   it "is not valid without a amount" do

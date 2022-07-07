@@ -9,7 +9,7 @@ module Contexts
           )
           user.save!
           ActiveRecord::Base.transaction do
-            Transaction.create!({ sender: 1000, receiver: user.id, amount: 1000.0 })
+            Transaction.create!({ sender_id: 1000, receiver_id: user.id, amount: 1000.0 })
           end
         end
       end

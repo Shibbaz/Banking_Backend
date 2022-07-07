@@ -39,8 +39,8 @@ ActiveRecord::Schema.define(version: 2022_07_05_182148) do
   end
 
   create_table "transactions", force: :cascade do |t|
-    t.integer "sender"
-    t.integer "receiver"
+    t.integer "sender_id"
+    t.integer "receiver_id"
     t.decimal "amount"
     t.text "currency"
     t.datetime "created_at", precision: 6, null: false
