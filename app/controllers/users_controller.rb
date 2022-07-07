@@ -6,7 +6,7 @@ class UsersController < ApplicationController
 
   def create
     @user = Contexts::Users::Repository.new.create!(user_params)
-    render json: {message: "User was created"}, status: :ok
+    render json: { message: "User was created" }, status: :ok
   end
 
   private

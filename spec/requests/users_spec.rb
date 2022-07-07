@@ -14,12 +14,12 @@ RSpec.describe "Users", type: :request do
     end
 
     it "succeces in accessing /users page" do
-      get "/users", headers: {Authorization: @token}
+      get "/users", headers: { Authorization: @token }
       expect(response.status).to eq(200)
     end
 
     it "fails accessing /users page" do
-      expect { get "/users", headers: {Authorization: "token"} }.to raise_error(JWT::DecodeError)
+      expect { get "/users", headers: { Authorization: "token" } }.to raise_error(JWT::DecodeError)
     end
   end
 

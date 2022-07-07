@@ -59,3 +59,5 @@ group :test do
   gem "ruby_event_store-rspec"
 end
 gem "batch-loader"
+# Rubocop
+gem 'rubocop-rails', require: false

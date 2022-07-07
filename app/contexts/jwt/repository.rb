@@ -3,6 +3,7 @@ module Contexts
   module Jwt
     class Repository
       attr_reader :adapter
+
       SECRET_KEY = Rails.application.secret_key_base
 
       def initialize(adapter: JWT)

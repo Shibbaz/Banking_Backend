@@ -19,22 +19,22 @@ RSpec.describe "Transactions", type: :request do
     end
 
     it "succeces in accessing /transactions page" do
-      get "/transactions", headers: {Authorization: token}
+      get "/transactions", headers: { Authorization: token }
       expect(response.status).to eq(200)
     end
 
     it "fails accessing /transactions page" do
-      expect { get "/transactions", headers: {Authorization: "token"} }.to raise_error(JWT::DecodeError)
+      expect { get "/transactions", headers: { Authorization: "token" } }.to raise_error(JWT::DecodeError)
     end
 
     it "succeces in accessing /balance page" do
-      get "/balance", headers: {Authorization: token}
+      get "/balance", headers: { Authorization: token }
       expect(JSON(response.body)["balance"].to_i).to eq(1000)
       expect(response.status).to eq(200)
     end
 
     it "fails accessing /balance page" do
-      expect { get "/balance", headers: {Authorization: "token"} }.to raise_error(JWT::DecodeError)
+      expect { get "/balance", headers: { Authorization: "token" } }.to raise_error(JWT::DecodeError)
     end
   end
 
@@ -69,7 +69,7 @@ RSpec.describe "Transactions", type: :request do
       post "/transactions", params: {
         receiver: extra_user.id,
         amount: 1.0
-      }, headers: {Authorization: token}
+      }, headers: { Authorization: token }
 
       expect(response).to have_http_status(:ok)
     end
@@ -79,7 +79,7 @@ RSpec.describe "Transactions", type: :request do
         post "/transactions", params: {
           receiver: user.id,
           amount: 1.0
-        }, headers: {Authorization: token}
+        }, headers: { Authorization: token }
       }.to raise_error(StandardError)
     end
 
@@ -87,7 +87,7 @@ RSpec.describe "Transactions", type: :request do
       post "/transactions", params: {
         receiver: extra_user.id,
         amount: 1.0
-      }, headers: {Authorization: token}
+      }, headers: { Authorization: token }
 
       expect(response).to have_http_status(:ok)
       expect(Contexts::Transactions::Repository.new(user.id).calculate_balance).to eq(999.0)
@@ -95,7 +95,7 @@ RSpec.describe "Transactions", type: :request do
       post "/transactions", params: {
         receiver: user.id,
         amount: 1.0
-      }, headers: {Authorization: extra_token}
+      }, headers: { Authorization: extra_token }
       expect(Contexts::Transactions::Repository.new(user.id).calculate_balance).to eq(1000.0)
       expect(Contexts::Transactions::Repository.new(extra_user.id).calculate_balance).to eq(1000.0)
       expect(response).to have_http_status(:ok)

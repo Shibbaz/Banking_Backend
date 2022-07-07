@@ -10,9 +10,9 @@ module Contexts
       def create!(params)
         ActiveRecord::Base.transaction do
           event = UserWasCreated.new(data: {
-            params: params,
-            adapter: @adapter
-          })
+                                       params: params,
+                                       adapter: @adapter
+                                     })
           $event_store.publish(event, stream_name: SecureRandom.uuid)
         end
       end
