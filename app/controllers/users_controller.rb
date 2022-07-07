@@ -6,7 +6,6 @@ class UsersController < ApplicationController
 
   def create
     @user = Contexts::Users::Repository.new.create!(user_params)
-    Transaction.create!({sender: 1000, receiver: @user.id, amount: 1000.0})
     render json: {message: "User was created"}, status: :ok
   end
 
