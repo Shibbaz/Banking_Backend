@@ -8,7 +8,7 @@ module Contexts
       end
 
       def create!(params)
-        ActiveRecord::Base.transaction do
+        User.transaction do
           event = UserWasCreated.new(data: {
                                        params: params,
                                        adapter: @adapter

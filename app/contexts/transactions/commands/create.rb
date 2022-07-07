@@ -11,7 +11,7 @@ module Contexts
           balance = stream[:balance]
           raise StandardError.new "Amount can't be 0 or below" if (amount) <= 0.0
           raise StandardError.new "Receiver can't be sender" if receiver_id.equal?(current_user_id)
-          raise StandardError.new "Amount can't be bigger than Balance" if (balance - amount) <= 0.0
+          raise StandardError.new "Amount can't be bigger than Balance" if (balance - amount) < 0.0
 
           receiver ||= User.find(receiver_id)
           raise ActiveRecord::RecordNotFound if receiver.nil?

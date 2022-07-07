@@ -10,7 +10,7 @@ module Contexts
       end
 
       def create!(params)
-        ActiveRecord::Base.transaction do
+        Transaction.transaction do
           event = TransactionWasCreated.new(data: {
                                               params: params,
                                               current_user_id: @current_user_id,
