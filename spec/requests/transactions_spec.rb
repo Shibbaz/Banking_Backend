@@ -50,24 +50,24 @@ RSpec.describe "Transactions", type: :request do
       JSON(response.body)["token"]
     }
 
-    let(:extraUser) {
+    let(:extra_user) {
       create(:user, password: "test1234")
     }
-    let(:extraToken) {
+    let(:extra_token) {
       post "/auth/login", params: {
-        email: user.email,
+        email: extra_user.email,
         password: "test1234"
       }
       JSON(response.body)["token"]
     }
     before do
       Transaction.create!(sender: 1000, receiver: user.id, amount: 1000.0)
-      Transaction.create!(sender: 1000, receiver: extraUser.id, amount: 1000.0)
+      Transaction.create!(sender: 1000, receiver: extra_user.id, amount: 1000.0)
     end
 
     it "creates new transaction" do
       post "/transactions", params: {
-        receiver: extraUser.id,
+        receiver: extra_user.id,
         amount: 1.0
       }, headers: {Authorization: token}
 
@@ -81,6 +81,24 @@ RSpec.describe "Transactions", type: :request do
           amount: 1.0
         }, headers: {Authorization: token}
       }.to raise_error(StandardError)
+    end
+
+    it "sends back money" do
+      post "/transactions", params: {
+        receiver: extra_user.id,
+        amount: 1.0
+      }, headers: {Authorization: token}
+
+      expect(response).to have_http_status(:ok)
+      expect(Contexts::Transactions::Repository.new(user.id).calculate_balance).to eq(999.0)
+      expect(Contexts::Transactions::Repository.new(extra_user.id).calculate_balance).to eq(1001.0)
+      post "/transactions", params: {
+        receiver: user.id,
+        amount: 1.0
+      }, headers: {Authorization: extra_token}
+      expect(Contexts::Transactions::Repository.new(user.id).calculate_balance).to eq(1000.0)
+      expect(Contexts::Transactions::Repository.new(extra_user.id).calculate_balance).to eq(1000.0)
+      expect(response).to have_http_status(:ok)
     end
   end
 end
