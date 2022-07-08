@@ -29,7 +29,7 @@ module Contexts
         end
 
         def validate_if_receiver_is_sender!
-          raise StandardError.new "Receiver can't be sender" if @receiver_id.equal?(@current_user_id)
+          raise StandardError.new "Receiver can't be sender" if receiver_id.equal?(current_user_id)
         end
 
         def validate_amount!
@@ -41,8 +41,8 @@ module Contexts
         end
 
         def validate_receiver!
-          receiver_id ||= User.find(@receiver_id)
-          raise ActiveRecord::RecordNotFound if receiver_id.nil?
+          receiver ||= User.find(receiver_id)
+          raise ActiveRecord::RecordNotFound if receiver.nil?
         end
       end
     end

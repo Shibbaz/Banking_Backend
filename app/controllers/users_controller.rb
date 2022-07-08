@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   skip_before_action :authenticate_request, only: [:create]
   def index
-    render json: @current_user, except: [:password_digest], status: :ok
+    render json: current_user, except: [:password_digest], status: :ok
   end
 
   def create

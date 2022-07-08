@@ -8,8 +8,13 @@ module Contexts
             stream[:params]
           )
           user.save!
-          ActiveRecord::Base.transaction do
-            Transaction.create!({ sender_id: 1000, receiver_id: user.id, amount: 1000.0 })
+          params = { receiver_id: user.id, amount: 1000, currency: "USD" }
+          Transaction.transaction do
+            event = SalaryWasSentToUser.new(data: {
+                                              params: params,
+                                              adapter: Transaction
+                                            })
+            $event_store.publish(event, stream_name: SecureRandom.uuid)
           end
         end
       end

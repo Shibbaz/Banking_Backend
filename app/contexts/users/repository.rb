@@ -2,6 +2,7 @@ module Contexts
   module Users
     class Repository
       attr_reader :adapter
+      attr_reader :user
 
       def initialize(adapter: User)
         @adapter = adapter
@@ -11,27 +12,27 @@ module Contexts
         User.transaction do
           event = UserWasCreated.new(data: {
                                        params: params,
-                                       adapter: @adapter
+                                       adapter: adapter
                                      })
           $event_store.publish(event, stream_name: SecureRandom.uuid)
         end
       end
 
       def find(id)
-        @adapter.find(id)
+        adapter.find(id)
       end
 
       def find_by_email(email)
-        @adapter.find_by(email: email)
+        adapter.find_by(email: email)
       end
 
       def authenticate(email, password:)
-        @user = @adapter.find_by_email(email)
-        @user&.authenticate(password)
+        @user = adapter.find_by_email(email)
+        user&.authenticate(password)
       end
 
       def token
-        Contexts::Jwt::Repository.new.jwt_encode(user_id: @user.id)
+        Contexts::Jwt::Repository.new.jwt_encode(user_id: user.id)
       end
     end
   end
