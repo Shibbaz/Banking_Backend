@@ -8,7 +8,6 @@ module Contexts
             stream[:params]
           )
           user.save!
-          params = { receiver_id: user.id, amount: 1000, currency: "USD" }
         end
       end
     end
