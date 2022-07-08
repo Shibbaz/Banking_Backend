@@ -9,13 +9,6 @@ module Contexts
           )
           user.save!
           params = { receiver_id: user.id, amount: 1000, currency: "USD" }
-          Transaction.transaction do
-            event = SalaryWasSentToUser.new(data: {
-                                              params: params,
-                                              adapter: Transaction
-                                            })
-            $event_store.publish(event, stream_name: SecureRandom.uuid)
-          end
         end
       end
     end

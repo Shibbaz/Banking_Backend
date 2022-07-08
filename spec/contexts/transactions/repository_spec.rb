@@ -22,13 +22,13 @@ RSpec.describe Contexts::Transactions::Repository, type: :model do
     extra_transaction.save!
   end
 
-  context "constructor method" do
+  context "validates constructor method" do
     it "success" do
       expect { repository }.to_not raise_error
     end
   end
 
-  context "calculate balance method" do
+  context "validates calculate balance method" do
     it "calculates balance" do
       expect(repository.calculate_balance).to eq(1000)
       Transaction.create!(sender_id: user.id, receiver_id: extra_user.id, amount: 100.0)
@@ -36,7 +36,7 @@ RSpec.describe Contexts::Transactions::Repository, type: :model do
     end
   end
 
-  context "current_user_transactions method" do
+  context "validates current_user_transactions method" do
     it "returns current user transactions" do
       expect(repository.current_user_transactions.length).to eq(1)
       expect(repository.current_user_transactions).to eq([transaction])
@@ -45,25 +45,28 @@ RSpec.describe Contexts::Transactions::Repository, type: :model do
     end
   end
 
-  context "account_data method" do
+  context "validates account_data method" do
     it "returns account datas" do
       expect(repository.account_data).to eq({ user_id: user.id, balance: 1000, currency: "USD" })
     end
   end
 
-  context "account_data method" do
+  context "validates show_sorted_transactions method" do
     it "returns sorted transactions" do
       Transaction.create!(sender_id: user.id, receiver_id: extra_user.id, amount: 100.0)
       expect(repository.show_sorted_transactions.length).to eq(2)
     end
   end
 
-  context "create! method" do
-    it "success" do
-      params = {
+  context "validates create! method" do
+    let(:params) {
+      {
         receiver_id: extra_user.id,
         amount: 1.0
       }
+    }
+
+    it "success" do
       event_store = repository.create!(params)
       expect(event_store).to have_published(an_event(TransactionWasCreated))
     end
