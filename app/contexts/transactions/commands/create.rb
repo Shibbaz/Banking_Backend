@@ -25,15 +25,15 @@ module Contexts
         end
 
         def validate_if_receiver_is_sender!
-          raise StandardError.new "Receiver can't be sender" if receiver_id.equal?(current_user_id)
+          raise StandardError, "Receiver can't be sender" if receiver_id.equal?(current_user_id)
         end
 
         def validate_amount!
-          raise StandardError.new "Amount can't be 0 or below" if (amount) <= 0.0
+          raise StandardError, "Amount can't be 0 or below" if (amount) <= 0.0
         end
 
         def validate_balance!
-          raise StandardError.new "Balance have to be greater or equal 0" if (balance - amount) < 0.0
+          raise StandardError, 'Balance have to be greater or equal 0' if (balance - amount) < 0.0
         end
 
         def validate_receiver!

@@ -7,7 +7,7 @@ class TransactionsController < ApplicationController
   def create
     repository = Contexts::Transactions::Repository.new(current_user.id)
     repository.create!(transaction_params)
-    render json: { message: "Transaction was created" }, status: :ok
+    render json: { message: 'Transaction was created' }, status: :ok
   end
 
   def account

@@ -3,7 +3,7 @@
 class CreateEventStoreEvents < ActiveRecord::Migration[4.2]
   def change
     postgres =
-      ActiveRecord::Base.connection.adapter_name == "PostgreSQL"
+      ActiveRecord::Base.connection.adapter_name == 'PostgreSQL'
     if postgres
       create_table(:event_store_events_in_streams, id: :bigserial, force: false) do |t|
         t.string :stream, null: false
@@ -11,9 +11,9 @@ class CreateEventStoreEvents < ActiveRecord::Migration[4.2]
         t.references :event, null: false, type: :uuid
         t.datetime :created_at, null: false
       end
-      add_index :event_store_events_in_streams, [:stream, :position], unique: true
+      add_index :event_store_events_in_streams, %i[stream position], unique: true
       add_index :event_store_events_in_streams, [:created_at]
-      add_index :event_store_events_in_streams, [:stream, :event_id], unique: true
+      add_index :event_store_events_in_streams, %i[stream event_id], unique: true
 
       create_table(:event_store_events, id: :bigserial, force: false) do |t|
         t.references :event, null: false, type: :uuid
@@ -34,9 +34,9 @@ class CreateEventStoreEvents < ActiveRecord::Migration[4.2]
         t.references :event, null: false, type: :string, limit: 36
         t.datetime :created_at, null: false, precision: 6
       end
-      add_index :event_store_events_in_streams, [:stream, :position], unique: true
+      add_index :event_store_events_in_streams, %i[stream position], unique: true
       add_index :event_store_events_in_streams, [:created_at]
-      add_index :event_store_events_in_streams, [:stream, :event_id], unique: true
+      add_index :event_store_events_in_streams, %i[stream event_id], unique: true
 
       create_table(:event_store_events, force: false) do |t|
         t.references :event, null: false, type: :string, limit: 36

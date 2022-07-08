@@ -1,4 +1,4 @@
-require "jwt"
+require 'jwt'
 module Contexts
   module Jwt
     class Repository

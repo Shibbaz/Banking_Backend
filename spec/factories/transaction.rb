@@ -1,4 +1,4 @@
-require "faker"
+require 'faker'
 FactoryBot.define do
   factory :transaction do
     sender_id { Faker::Number.number(digits: 1) }

@@ -10,19 +10,17 @@ module Contexts
       def create!(params)
         User.transaction do
           event = UserWasCreated.new(data: {
-                                       params: params,
-                                       adapter: adapter
+                                       params:,
+                                       adapter:
                                      })
           $event_store.publish(event, stream_name: SecureRandom.uuid)
         end
       end
 
-      def find(id)
-        adapter.find(id)
-      end
+      delegate :find, to: :adapter
 
       def find_by_email(email)
-        adapter.find_by(email: email)
+        adapter.find_by(email:)
       end
 
       def authenticate(email, password:)

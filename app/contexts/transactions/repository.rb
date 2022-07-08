@@ -10,10 +10,10 @@ module Contexts
       def create!(params)
         Transaction.transaction do
           event = TransactionWasCreated.new(data: {
-                                              params: params,
-                                              current_user_id: current_user_id,
+                                              params:,
+                                              current_user_id:,
                                               balance: calculate_balance,
-                                              adapter: adapter
+                                              adapter:
                                             })
           $event_store.publish(event, stream_name: SecureRandom.uuid)
         end
@@ -21,11 +21,11 @@ module Contexts
 
       def show_sorted_transactions
         ids = current_user_transactions.map(&:id)
-        Contexts::Transactions::Queries::Transactions.new.sorted_transactions(ids: ids, user_id: current_user_id)
+        Contexts::Transactions::Queries::Transactions.new.sorted_transactions(ids:, user_id: current_user_id)
       end
 
       def account_data
-        { user_id: current_user_id, balance: calculate_balance, currency: "USD" }
+        { user_id: current_user_id, balance: calculate_balance, currency: 'USD' }
       end
 
       def calculate_balance
@@ -41,24 +41,22 @@ module Contexts
       attr_reader :adapter, :current_user_sender_transactions, :current_user_id
 
       def transfered
-        current_user_transactions.map(&:sender_id).each_with_index { |element, index|
+        current_user_transactions.map(&:sender_id).each_with_index do |element, index|
           current_user_sender_transactions << index if element == current_user_id
-        }
+        end
         sent_by_current_user_transactions.select { |element| !element.equal?(nil) }
       end
 
       def sent_by_current_user_transactions
-        current_user_transactions.map(&:amount).each_with_index.map { |element, index|
-          if current_user_sender_transactions.include?(index)
-            Contexts::Helpers::Methods.new.make_negative(element)
-          end
-        }
+        current_user_transactions.map(&:amount).each_with_index.map do |element, index|
+          Contexts::Helpers::Methods.new.make_negative(element) if current_user_sender_transactions.include?(index)
+        end
       end
 
       def received
-        transactions = current_user_transactions.map(&:amount).reject.each_with_index { |_, index|
+        transactions = current_user_transactions.map(&:amount).reject.each_with_index do |_, index|
           current_user_sender_transactions.include? index
-        }
+        end
         transactions.empty? ? [0.0] : transactions
       end
 
