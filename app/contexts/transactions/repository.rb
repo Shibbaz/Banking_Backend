@@ -42,26 +42,26 @@ module Contexts
       attr_reader :negative_transactions
       attr_reader :current_user_id
 
-      def received
-        transactions = current_user_transactions
-        transactions.map(&:amount).reject.each_with_index { |i, ix|
-          negative_transactions.include? ix
-        }.empty? ? [0.0] : transactions.map(&:amount).reject.each_with_index { |i, ix|
-                             negative_transactions.include? ix
-                           }
-      end
-
-      def transfered
-        transactions = current_user_transactions
-        transactions.map(&:sender_id).each_with_index { |element, index|
-          negative_transactions << index if element == current_user_id
-        }
-        sent_money = transactions.map(&:amount).each_with_index.map { |element, index|
+      def sent_money
+        current_user_transactions.map(&:amount).each_with_index.map { |element, index|
           if negative_transactions.include?(index)
             Contexts::Helpers::Methods.new.make_negative(element)
           end
         }
+      end
+
+      def transfered
+        current_user_transactions.map(&:sender_id).each_with_index { |element, index|
+          negative_transactions << index if element == current_user_id
+        }
         sent_money.select { |element| !element.equal?(nil) }
+      end
+
+      def received
+        transactions = current_user_transactions.map(&:amount).reject.each_with_index { |_, index|
+          negative_transactions.include? index
+        }
+        transactions.empty? ? [0.0] : transactions
       end
     end
   end

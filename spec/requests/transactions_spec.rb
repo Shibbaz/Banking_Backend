@@ -3,7 +3,7 @@ require "faker"
 
 RSpec.describe "Transactions", type: :request do
   describe "GET /transactions" do
-    let(:user) {
+    subject(:user) {
       create(:user, password: "test1234")
     }
     let(:token) {
@@ -60,9 +60,19 @@ RSpec.describe "Transactions", type: :request do
       }
       JSON(response.body)["token"]
     }
+    let(:user_params) {
+      {
+        sender_id: 1000, receiver_id: user.id, amount: 1000.0
+      }
+    }
+    let(:extra_user_params) {
+      {
+        sender_id: 1000, receiver_id: extra_user.id, amount: 1000.0
+      }
+    }
     before do
-      Transaction.create!(sender_id: 1000, receiver_id: user.id, amount: 1000.0)
-      Transaction.create!(sender_id: 1000, receiver_id: extra_user.id, amount: 1000.0)
+      Transaction.create!(user_params)
+      Transaction.create!(extra_user_params)
     end
 
     it "creates new transaction" do

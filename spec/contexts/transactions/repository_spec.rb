@@ -2,19 +2,19 @@ require "rails_helper"
 require "faker"
 
 RSpec.describe Contexts::Transactions::Repository, type: :model do
-  let(:user) {
+  subject(:user) {
     create(:user)
   }
-  let(:extra_user) {
+  subject(:extra_user) {
     create(:user)
   }
-  let(:repository) {
+  subject(:repository) {
     Contexts::Transactions::Repository.new(user.id)
   }
-  let(:transaction) {
+  subject(:transaction) {
     Transaction.new(sender_id: 1000, receiver_id: user.id, amount: 1000.0)
   }
-  let(:extra_transaction) {
+  subject(:extra_transaction) {
     Transaction.new(sender_id: 1000, receiver_id: extra_user.id, amount: 1000.0)
   }
   before do

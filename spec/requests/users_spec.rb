@@ -5,16 +5,20 @@ RSpec.describe "Users", type: :request do
   describe "GET /users" do
     before do
       create(:user, password: "test1234")
-      email = User.first.email
+    end
+    let(:user_email) {
+      User.first.email
+    }
+    let(:token) {
       post "/auth/login", params: {
-        email: email,
+        email: user_email,
         password: "test1234"
       }
       @token = JSON(response.body)["token"]
-    end
+    }
 
     it "succeces in accessing /users page" do
-      get "/users", headers: { Authorization: @token }
+      get "/users", headers: { Authorization: token }
       expect(response.status).to eq(200)
     end
 
@@ -27,6 +31,7 @@ RSpec.describe "Users", type: :request do
     before do
       create(:user)
     end
+    subject(:existing_user) { User.first }
 
     it "creates new user" do
       post "/users", params: {
@@ -40,7 +45,6 @@ RSpec.describe "Users", type: :request do
     end
 
     it "fails creating new user" do
-      existing_user = User.first
       expect {
         post "/users", params: {
           name: existing_user.name,

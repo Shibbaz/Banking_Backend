@@ -5,17 +5,17 @@ RSpec.describe "Authentications", type: :request do
     before do
       create(:user, password: "test1234")
     end
+
+    let(:user_email) { User.first.email }
     it "create a token" do
-      email = User.first.email
       post "/auth/login", params: {
-        email: email,
+        email: user_email,
         password: "test1234"
       }
       expect(JSON(response.body)["token"].length).to_not eq(0)
     end
 
     it "fails creating a token" do
-      email = User.first.email
       post "/auth/login", params: {
         email: Faker::Internet.email,
         password: "test1234"
