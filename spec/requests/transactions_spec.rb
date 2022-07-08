@@ -39,7 +39,7 @@ RSpec.describe "Transactions", type: :request do
   end
 
   describe "POST /users" do
-    let(:user) {
+    subject(:user) {
       create(:user, password: "test1234")
     }
     let(:token) {
@@ -50,7 +50,7 @@ RSpec.describe "Transactions", type: :request do
       JSON(response.body)["token"]
     }
 
-    let(:extra_user) {
+    subject(:extra_user) {
       create(:user, password: "test1234")
     }
     let(:extra_token) {
