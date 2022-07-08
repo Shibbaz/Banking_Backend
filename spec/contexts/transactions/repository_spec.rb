@@ -66,7 +66,7 @@ RSpec.describe Contexts::Transactions::Repository, type: :model do
       }
     }
 
-    it "success" do
+    it "success when creating a transaction" do
       event_store = repository.create!(params)
       expect(event_store).to have_published(an_event(TransactionWasCreated))
     end
