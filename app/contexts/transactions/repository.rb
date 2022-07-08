@@ -4,7 +4,7 @@ module Contexts
       def initialize(current_user_id, adapter: Transaction)
         @adapter = adapter
         @current_user_id = current_user_id
-        @negative_transactions = []
+        @current_user_sender_transactions = []
       end
 
       def create!(params)
@@ -33,33 +33,41 @@ module Contexts
       end
 
       def current_user_transactions
-        Transaction.where(receiver_id: current_user_id).or(Transaction.where(sender_id: current_user_id))
+        transactions_received_by_current_user.or(transactions_sent_by_current_user)
       end
 
       private
 
-      attr_reader :adapter, :negative_transactions, :current_user_id
+      attr_reader :adapter, :current_user_sender_transactions, :current_user_id
 
-      def sent_money
+      def transfered
+        current_user_transactions.map(&:sender_id).each_with_index { |element, index|
+          current_user_sender_transactions << index if element == current_user_id
+        }
+        sent_by_current_user_transactions.select { |element| !element.equal?(nil) }
+      end
+
+      def sent_by_current_user_transactions
         current_user_transactions.map(&:amount).each_with_index.map { |element, index|
-          if negative_transactions.include?(index)
+          if current_user_sender_transactions.include?(index)
             Contexts::Helpers::Methods.new.make_negative(element)
           end
         }
       end
 
-      def transfered
-        current_user_transactions.map(&:sender_id).each_with_index { |element, index|
-          negative_transactions << index if element == current_user_id
-        }
-        sent_money.select { |element| !element.equal?(nil) }
-      end
-
       def received
         transactions = current_user_transactions.map(&:amount).reject.each_with_index { |_, index|
-          negative_transactions.include? index
+          current_user_sender_transactions.include? index
         }
         transactions.empty? ? [0.0] : transactions
+      end
+
+      def transactions_received_by_current_user
+        Transaction.where(receiver_id: current_user_id)
+      end
+
+      def transactions_sent_by_current_user
+        Transaction.where(sender_id: current_user_id)
       end
     end
   end
