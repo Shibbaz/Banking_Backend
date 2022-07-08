@@ -8,7 +8,9 @@ API uses:
 * JWT, bcrypt to authenticate the users
 * RSpec, testing framework
 * Pry, debugger
-* Rails Event Store
+ - Design Patterns:
+   - Repository
+   - Event Sourcing / Rails Event Store gem
 
 Initialize an app:
 * rails db:create
