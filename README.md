@@ -41,3 +41,7 @@ Explanation:
   - You need a user with some greater than 0.0 balance to make transactions.
   - There are users with some balance initialized through rails db:seed. 
   - The credentials to those accounts can be found there.
+
+Manual testing API:
+- You can find Postman screenshots of all endpoints and their params:
+ - https://github.com/Shibbaz/Banking/issues/6
