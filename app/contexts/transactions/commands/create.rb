@@ -10,11 +10,7 @@ module Contexts
 
         private
 
-        attr_reader :stream
-        attr_reader :receiver_id
-        attr_reader :current_user_id
-        attr_reader :amount
-        attr_reader :balance
+        attr_reader :stream, :receiver_id, :current_user_id, :amount, :balance
 
         def check_if_errors_were_raised!
           @receiver_id = @stream[:params][:receiver_id].to_i

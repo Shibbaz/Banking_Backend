@@ -38,9 +38,7 @@ module Contexts
 
       private
 
-      attr_reader :adapter
-      attr_reader :negative_transactions
-      attr_reader :current_user_id
+      attr_reader :adapter, :negative_transactions, :current_user_id
 
       def sent_money
         current_user_transactions.map(&:amount).each_with_index.map { |element, index|

@@ -1,8 +1,7 @@
 module Contexts
   module Users
     class Repository
-      attr_reader :adapter
-      attr_reader :user
+      attr_reader :adapter, :user
 
       def initialize(adapter: User)
         @adapter = adapter
