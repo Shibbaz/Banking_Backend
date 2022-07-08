@@ -7,7 +7,6 @@ module Contexts
           user = stream[:adapter].create!(
             stream[:params]
           )
-          user.save!
         end
       end
     end
