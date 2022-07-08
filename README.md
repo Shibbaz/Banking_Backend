@@ -43,5 +43,4 @@ Explanation:
   - The credentials to those accounts can be found there.
 
 Manual testing API:
-- You can find Postman screenshots of all endpoints and their params:
- - https://github.com/Shibbaz/Banking/issues/6
+- You can find Postman screenshots of all endpoints and their params https://github.com/Shibbaz/Banking/issues/6
