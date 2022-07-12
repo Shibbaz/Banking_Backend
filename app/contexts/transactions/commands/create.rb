@@ -4,6 +4,8 @@ module Contexts
       class Create
         def call(event)
           @stream = event.data
+          @current_user_id = @stream[:current_user_id]
+          User.find(@current_user_id).lock!
           check_if_errors_were_raised!
           @stream[:adapter].create!(@stream[:params].merge(sender_id: current_user_id))
         end
@@ -14,7 +16,6 @@ module Contexts
 
         def check_if_errors_were_raised!
           @receiver_id = @stream[:params][:receiver_id].to_i
-          @current_user_id = @stream[:current_user_id]
           @amount = @stream[:params][:amount].to_d
           @balance = @stream[:balance]
 
