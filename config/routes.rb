@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
   resources :users
-  post "/auth/login", to: "authentication#login"
+  resources :transactions
+  get '/balance', to: 'transactions#account'
+  post '/auth/login', to: 'authentication#login'
 end
