@@ -10,14 +10,14 @@ RSpec.describe Contexts::Users::Repository, type: :model do
     Contexts::Users::Repository.new
   end
 
-  context 'validates constructor method' do
+  context 'when User is initialized' do
     it 'success when constructor method is called' do
       expect { Contexts::Users::Repository.new }.to_not raise_error
     end
   end
 
-  context 'validates find! method' do
-    it 'success when finding an user' do
+  context 'when User is found' do
+    it 'success finding an user' do
       expect { repository.find(User.first.id) }.to_not raise_error
     end
 
@@ -26,8 +26,8 @@ RSpec.describe Contexts::Users::Repository, type: :model do
     end
   end
 
-  context 'validates find_by_email! method' do
-    it 'success when finding user by its email' do
+  context 'when User is found by an Email' do
+    it 'success finding user by its email' do
       expect { repository.find_by_email('test3@test.com') }.to_not raise_error
     end
 
@@ -36,7 +36,7 @@ RSpec.describe Contexts::Users::Repository, type: :model do
     end
   end
 
-  context 'validates token method' do
+  context 'when validating token generator' do
     it 'success when generating a token ' do
       repository.authenticate('test3@test.com', password: 'test12345')
       expect(repository.token).to_not eq(nil)
@@ -48,7 +48,7 @@ RSpec.describe Contexts::Users::Repository, type: :model do
     end
   end
 
-  context 'validates authenticate method' do
+  context 'when validating authentication' do
     it 'is success when user is authenticating' do
       expect(repository.authenticate('test3@test.com', password: 'test12345')).to_not eq(nil)
     end
@@ -58,7 +58,7 @@ RSpec.describe Contexts::Users::Repository, type: :model do
     end
   end
 
-  context 'validates create! method' do
+  context 'when creating an User' do
     let(:params) do
       {
         name: Faker::Name.name,

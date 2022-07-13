@@ -22,13 +22,13 @@ RSpec.describe Contexts::Transactions::Repository, type: :model do
     extra_transaction.save!
   end
 
-  context 'validates constructor method' do
+  context 'when object is initialized' do
     it 'success' do
       expect { repository }.to_not raise_error
     end
   end
 
-  context 'validates calculate balance method' do
+  context 'when calculating balance method' do
     it 'calculates balance' do
       expect(repository.calculate_balance).to eq(1000)
       Transaction.create!(sender_id: user.id, receiver_id: extra_user.id, amount: 100.0)
@@ -36,7 +36,7 @@ RSpec.describe Contexts::Transactions::Repository, type: :model do
     end
   end
 
-  context 'validates current_user_transactions method' do
+  context 'when returning current user transactions' do
     it 'returns current user transactions' do
       expect(repository.current_user_transactions.length).to eq(1)
       expect(repository.current_user_transactions).to eq([transaction])
@@ -45,20 +45,20 @@ RSpec.describe Contexts::Transactions::Repository, type: :model do
     end
   end
 
-  context 'validates account_data method' do
+  context 'when returning account_data hash' do
     it 'returns account datas' do
       expect(repository.account_data).to eq({ user_id: user.id, balance: 1000, currency: 'USD' })
     end
   end
 
-  context 'validates show_sorted_transactions method' do
+  context 'when returning current user sorted transactions method' do
     it 'returns sorted transactions' do
       Transaction.create!(sender_id: user.id, receiver_id: extra_user.id, amount: 100.0)
       expect(repository.show_sorted_transactions.length).to eq(2)
     end
   end
 
-  context 'validates create! method' do
+  context 'when creating a new Transaction' do
     let(:params) do
       {
         receiver_id: extra_user.id,
