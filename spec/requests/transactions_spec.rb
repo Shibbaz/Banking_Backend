@@ -110,5 +110,46 @@ RSpec.describe 'Transactions', type: :request do
       expect(Contexts::Transactions::Repository.new(extra_user.id).calculate_balance).to eq(1000.0)
       expect(response).to have_http_status(:ok)
     end
+
+    context 'when sending few transactions'
+    let(:new_user)  do
+      create(:user, password: 'test1234')
+    end
+    before do
+      create(:transaction, receiver_id: new_user.id, amount: 1000)
+      create(:user, password: 'test1234')
+    end
+
+    let(:new_token) do
+      post '/auth/login', params: {
+        email: new_user.email,
+        password: 'test1234'
+      }
+      JSON(response.body)['token']
+    end
+
+    it 'sends multiple succesful transactions' do
+      expect  do
+        receiver_id = User.last.id
+        50.times do
+          post '/transactions', params: {
+            receiver_id:,
+            amount: 20.0
+          }, headers: { Authorization: new_token }
+        end
+      end.to_not raise_error
+    end
+
+    it 'sends untill balance is 0' do
+      expect  do
+        receiver_id = User.last.id
+        60.times do
+          post '/transactions', params: {
+            receiver_id:,
+            amount: 20.0
+          }, headers: { Authorization: new_token }
+        end
+      end.to raise_error(StandardError)
+    end
   end
 end
