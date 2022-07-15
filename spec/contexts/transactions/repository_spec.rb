@@ -31,7 +31,7 @@ RSpec.describe Contexts::Transactions::Repository, type: :model do
   context 'when calculating balance method' do
     it 'calculates balance' do
       expect(repository.calculate_balance).to eq(1000)
-      Transaction.create!(sender_id: user.id, receiver_id: extra_user.id, amount: 100.0)
+      repository.create!({ sender_id: user.id, receiver_id: extra_user.id, amount: 100.0 })
       expect(repository.calculate_balance).to eq(900)
     end
   end

@@ -143,10 +143,10 @@ RSpec.describe 'Transactions', type: :request do
     it 'sends untill balance is 0' do
       expect  do
         receiver_id = User.last.id
-        60.times do
+        100.times do
           post '/transactions', params: {
             receiver_id:,
-            amount: 20.0
+            amount: 300.0
           }, headers: { Authorization: new_token }
         end
       end.to raise_error(StandardError)

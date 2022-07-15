@@ -7,6 +7,12 @@ module Contexts
           @current_user_id = @stream[:current_user_id]
           User.find(@current_user_id).lock!
           check_if_errors_were_raised!
+          receiver = User.find(@stream[:params][:receiver_id])
+          new_receiver_balance = receiver.balance + amount
+          receiver.update_columns(balance: new_receiver_balance)
+          sender = User.find(current_user_id)
+          new_sender_balance = balance - amount
+          sender.update_columns(balance: new_sender_balance)
           @stream[:adapter].create!(@stream[:params].merge(sender_id: current_user_id))
         end
 
