@@ -29,7 +29,7 @@ module Contexts
       end
 
       def calculate_balance
-        (transfered + received).inject(:+)
+        User.find(current_user_id).balance
       end
 
       def current_user_transactions
@@ -38,27 +38,7 @@ module Contexts
 
       private
 
-      attr_reader :adapter, :current_user_sender_transactions, :current_user_id
-
-      def transfered
-        current_user_transactions.map(&:sender_id).each_with_index do |element, index|
-          current_user_sender_transactions << index if element == current_user_id
-        end
-        sent_by_current_user_transactions.select { |element| !element.equal?(nil) }
-      end
-
-      def sent_by_current_user_transactions
-        current_user_transactions.map(&:amount).each_with_index.map do |element, index|
-          Contexts::Helpers::Methods.new.make_negative(element) if current_user_sender_transactions.include?(index)
-        end
-      end
-
-      def received
-        transactions = current_user_transactions.map(&:amount).reject.each_with_index do |_, index|
-          current_user_sender_transactions.include? index
-        end
-        transactions.empty? ? [0.0] : transactions
-      end
+      attr_reader :adapter, :current_user_id
 
       def transactions_received_by_current_user
         Transaction.where(receiver_id: current_user_id)
