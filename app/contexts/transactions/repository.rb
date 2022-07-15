@@ -37,9 +37,8 @@ module Contexts
       end
 
       private
-
       attr_reader :adapter, :current_user_id
-
+      
       def transactions_received_by_current_user
         Transaction.where(receiver_id: current_user_id)
       end
